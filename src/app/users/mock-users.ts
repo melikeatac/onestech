@@ -1,6 +1,6 @@
 import { User } from './user.model';
 
-export const MOCK_USERS: User[] = [
+export const MockUsers: User[] = [
   { id: 1, firstName: 'İpek', lastName: 'Yılmaz', email: 'ipek@ones.com.tr', role: 'admin', status: 'active' },
   { id: 2, firstName: 'Kerem', lastName: 'Demir', email: 'kerem@ones.com.tr', role: 'user', status: 'active' },
   { id: 3, firstName: 'Derya', lastName: 'Aslan', email: 'derya@ones.com.tr', role: 'user', status: 'passive' },

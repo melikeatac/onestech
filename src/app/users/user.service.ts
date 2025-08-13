@@ -1,7 +1,7 @@
 import { Injectable, Signal, computed, inject, signal } from '@angular/core';
 import { delay, map, of } from 'rxjs';
 import { User } from './user.model';
-import { MOCK_USERS } from './mock-users';
+import { MockUsers } from './mock-users';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -14,7 +14,7 @@ export class UserService {
   loadUsers(): void {
     if (this.usersState() !== null) return;
     this.loadingState.set(true);
-    of(MOCK_USERS)
+    of(MockUsers)
       .pipe(delay(500))
       .subscribe({
         next: (data) => this.usersState.set(data),
@@ -24,7 +24,7 @@ export class UserService {
 
   getUserById(id: number) {
     // Simulate http with delay as observable
-    return of(MOCK_USERS.find((u) => u.id === id) ?? null).pipe(delay(300));
+    return of(MockUsers.find((u) => u.id === id) ?? null).pipe(delay(300));
   }
 
   updateUser(updated: User) {
