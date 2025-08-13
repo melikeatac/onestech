@@ -23,12 +23,10 @@ export class UserService {
   }
 
   getUserById(id: number) {
-    // Simulate http with delay as observable
     return of(MockUsers.find((u) => u.id === id) ?? null).pipe(delay(300));
   }
 
   updateUser(updated: User) {
-    // In-memory update to mock data for demo purposes
     const current = this.usersState();
     if (!current) return of(false).pipe(delay(200));
     const index = current.findIndex((u) => u.id === updated.id);

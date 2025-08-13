@@ -9,7 +9,6 @@ export const routes: Routes = [
   {
     path: 'users/:id',
     loadComponent: () => import('./users/user-detail/user-detail.component').then(m => m.UserDetailComponent),
-    canDeactivate: [() => import('./users/pending-changes.guard').then(m => m.pendingChangesGuard)],
   },
   { path: '**', redirectTo: 'users' },
 ];
