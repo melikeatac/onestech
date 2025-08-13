@@ -12,7 +12,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 105.4 5.4a7.5 7.5 0 0011.25 11.25z" />
         </svg>
       </label>
-      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600">
         <span>Rol</span>
         <select class="rounded-lg border-gray-300 text-sm" [value]="roleFilter()" (change)="onRoleFilterChange($any($event.target).value)">
           <option value="all">Tümü</option>
@@ -20,7 +20,7 @@
           <option value="user">user</option>
         </select>
       </label>
-      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600">
         <span>Durum</span>
         <select class="rounded-lg border-gray-300 text-sm" [value]="statusFilter()" (change)="onStatusFilterChange($any($event.target).value)">
           <option value="all">Tümü</option>
@@ -28,7 +28,7 @@
           <option value="passive">passive</option>
         </select>
       </label>
-      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600">
         <span>Sayfa</span>
         <select class="rounded-lg border-gray-300 text-sm" [value]="pageSize()" (change)="onPageSizeChange($any($event.target).value)">
           <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
@@ -59,9 +59,9 @@
   </ng-template>
 
   <ng-template #tableTpl>
-    <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+    <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm bg-white">
       <table class="w-full border-collapse">
-        <thead class="bg-gray-50 text-left text-sm text-gray-600 dark:bg-gray-900/30 dark:text-gray-300 select-none">
+        <thead class="bg-gray-50 text-left text-sm text-gray-600 select-none">
           <tr>
             <th class="px-5 py-3 cursor-pointer" (click)="onSort('id')">ID</th>
             <th class="px-5 py-3 cursor-pointer" (click)="onSort('name')">Ad Soyad</th>
@@ -69,9 +69,9 @@
             <th class="px-5 py-3 text-right">İşlem</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100 text-sm dark:divide-gray-700/60">
-          <tr *ngFor="let u of pagedUsers(); trackBy: trackByUserId" class="hover:bg-gray-50 dark:hover:bg-gray-700/40 transition cursor-pointer" (dblclick)="goto(u)" [routerLink]="['/users', u.id]">
-            <td class="px-5 py-3 font-medium text-gray-900 dark:text-gray-100">{{ u.id }}</td>
+        <tbody class="divide-y divide-gray-100 text-sm">
+          <tr *ngFor="let u of pagedUsers(); trackBy: trackByUserId" class="hover:bg-gray-50 transition cursor-pointer" (dblclick)="goto(u)" [routerLink]="['/users', u.id]">
+            <td class="px-5 py-3 font-medium text-gray-900">{{ u.id }}</td>
             <td class="px-5 py-3">
               <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-semibold">{{ initials(u) }}</div>
@@ -80,7 +80,7 @@
             </td>
             <td class="px-5 py-3">
               <div class="flex items-center gap-2">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700">
                   <span class="w-1.5 h-1.5 rounded-full" [class.bg-emerald-500]="u.status === 'active'" [class.bg-gray-400]="u.status === 'passive'"></span>
                   {{ u.email }}
                 </span>
@@ -99,11 +99,11 @@
       </table>
     </div>
 
-    <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-300">
+    <div class="flex items-center justify-between mt-4 text-sm text-gray-600">
       <div>Sayfa {{ pageIndex() + 1 }} / {{ totalPages() }}</div>
       <div class="flex items-center gap-2">
-        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 dark:bg-gray-800 dark:border-gray-700" [disabled]="pageIndex() === 0" (click)="onPageChange(pageIndex() - 1)">Önceki</button>
-        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 dark:bg-gray-800 dark:border-gray-700" [disabled]="(pageIndex() + 1) >= totalPages()" (click)="onPageChange(pageIndex() + 1)">Sonraki</button>
+        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40" [disabled]="pageIndex() === 0" (click)="onPageChange(pageIndex() - 1)">Önceki</button>
+        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40" [disabled]="(pageIndex() + 1) >= totalPages()" (click)="onPageChange(pageIndex() + 1)">Sonraki</button>
       </div>
     </div>
   </ng-template>

@@ -9,7 +9,6 @@ import { UserService } from '../user.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersListComponent implements OnInit {
