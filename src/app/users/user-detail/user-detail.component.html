@@ -1,0 +1,98 @@
+<section class="max-w-2xl mx-auto p-6" *ngIf="!isLoading(); else loadingTpl">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-900">Kullanıcı Detayı</h2>
+      <div class="flex items-center gap-2 mt-1" *ngIf="user() as u">
+        <p class="text-sm text-gray-500">#{{ u.id }} · {{ u.firstName }} {{ u.lastName }}</p>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs" [ngClass]="roleBadgeClass()">{{ u.role }}</span>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs" [ngClass]="statusBadgeClass()">{{ u.status }}</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50" (click)="back()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        Geri Dön
+      </button>
+      <button type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-40" [disabled]="isAdmin() || form.invalid" (click)="save()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        Kaydet
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!user(); else formTpl" class="text-center py-16">
+    <div class="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+      </svg>
+    </div>
+    <p class="text-gray-600">Kullanıcı bulunamadı.</p>
+  </div>
+
+  <ng-template #formTpl>
+    <form [formGroup]="form" class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">ID</label>
+          <input class="w-full rounded-lg" formControlName="id" readonly />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">E-posta</label>
+          <input class="w-full rounded-lg" formControlName="email" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Ad</label>
+          <input class="w-full rounded-lg" formControlName="firstName" />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Soyad</label>
+          <input class="w-full rounded-lg" formControlName="lastName" />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Rol</label>
+          <select class="w-full rounded-lg" formControlName="role">
+            <option value="admin">admin</option>
+            <option value="user">user</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Durum</label>
+          <select class="w-full rounded-lg" formControlName="status">
+            <option value="active">active</option>
+            <option value="passive">passive</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</section>
+
+<ng-template #loadingTpl>
+  <div class="flex items-center justify-center py-16 text-gray-600">
+    <svg class="animate-spin h-5 w-5 text-primary-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+    </svg>
+    Yükleniyor...
+  </div>
+  <div class="max-w-2xl mx-auto px-6">
+    <button type="button" class="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-gray-200 bg-white hover:bg-gray-50" (click)="back()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+      </svg>
+      Geri Dön
+    </button>
+  </div>
+</ng-template>
+
+

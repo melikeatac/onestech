@@ -1,0 +1,112 @@
+<section class="max-w-6xl mx-auto p-6">
+  <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
+    <div>
+      <h2 class="text-2xl font-semibold text-gray-900">Kullanıcılar</h2>
+      <p class="text-sm text-gray-500">Toplam {{ total() }} kayıt</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <label class="relative">
+        <span class="sr-only">Ara</span>
+        <input type="text" placeholder="ID, ad soyad veya e-posta ile ara" class="pl-9 pr-3 py-2 w-72 rounded-lg border-gray-300 text-sm placeholder:text-gray-400" (input)="onSearchChange($any($event.target).value)" />
+        <svg class="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 105.4 5.4a7.5 7.5 0 0011.25 11.25z" />
+        </svg>
+      </label>
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+        <span>Rol</span>
+        <select class="rounded-lg border-gray-300 text-sm" [value]="roleFilter()" (change)="onRoleFilterChange($any($event.target).value)">
+          <option value="all">Tümü</option>
+          <option value="admin">admin</option>
+          <option value="user">user</option>
+        </select>
+      </label>
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+        <span>Durum</span>
+        <select class="rounded-lg border-gray-300 text-sm" [value]="statusFilter()" (change)="onStatusFilterChange($any($event.target).value)">
+          <option value="all">Tümü</option>
+          <option value="active">active</option>
+          <option value="passive">passive</option>
+        </select>
+      </label>
+      <label class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+        <span>Sayfa</span>
+        <select class="rounded-lg border-gray-300 text-sm" [value]="pageSize()" (change)="onPageSizeChange($any($event.target).value)">
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading(); else dataTpl" class="flex items-center justify-center py-16">
+    <div class="flex items-center gap-3 text-gray-600">
+      <svg class="animate-spin h-5 w-5 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      Yükleniyor...
+    </div>
+  </div>
+
+  <ng-template #dataTpl>
+    <div *ngIf="(users() ?? []).length === 0; else tableTpl" class="text-center py-16">
+      <div class="mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+      </div>
+      <p class="text-gray-600">Kayıt bulunamadı.</p>
+    </div>
+  </ng-template>
+
+  <ng-template #tableTpl>
+    <div class="overflow-hidden rounded-xl border border-gray-200 shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700">
+      <table class="w-full border-collapse">
+        <thead class="bg-gray-50 text-left text-sm text-gray-600 dark:bg-gray-900/30 dark:text-gray-300 select-none">
+          <tr>
+            <th class="px-5 py-3 cursor-pointer" (click)="onSort('id')">ID</th>
+            <th class="px-5 py-3 cursor-pointer" (click)="onSort('name')">Ad Soyad</th>
+            <th class="px-5 py-3 cursor-pointer" (click)="onSort('email')">E-posta</th>
+            <th class="px-5 py-3 text-right">İşlem</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100 text-sm dark:divide-gray-700/60">
+          <tr *ngFor="let u of pagedUsers(); trackBy: trackByUserId" class="hover:bg-gray-50 dark:hover:bg-gray-700/40 transition cursor-pointer" (dblclick)="goto(u)" [routerLink]="['/users', u.id]">
+            <td class="px-5 py-3 font-medium text-gray-900 dark:text-gray-100">{{ u.id }}</td>
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xs font-semibold">{{ initials(u) }}</div>
+                <div>{{ fullName(u) }}</div>
+              </div>
+            </td>
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">
+                  <span class="w-1.5 h-1.5 rounded-full" [class.bg-emerald-500]="u.status === 'active'" [class.bg-gray-400]="u.status === 'passive'"></span>
+                  {{ u.email }}
+                </span>
+              </div>
+            </td>
+            <td class="px-5 py-3 text-right">
+              <a class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700" [routerLink]="['/users', u.id]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 9V5.25m0 0L9 7.5m2.25-2.25l2.25 2.25M12.75 15v3.75m0 0L15 16.5m-2.25 2.25L10.5 16.5M18 12h-3.75m0 0L16.5 9m-2.25 3L16.5 15M6 12h3.75m0 0L7.5 9m2.25 3L7.5 15" />
+                </svg>
+                Detay
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex items-center justify-between mt-4 text-sm text-gray-600 dark:text-gray-300">
+      <div>Sayfa {{ pageIndex() + 1 }} / {{ totalPages() }}</div>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 dark:bg-gray-800 dark:border-gray-700" [disabled]="pageIndex() === 0" (click)="onPageChange(pageIndex() - 1)">Önceki</button>
+        <button class="px-3 py-1.5 rounded-md border border-gray-200 bg-white hover:bg-gray-50 disabled:opacity-40 dark:bg-gray-800 dark:border-gray-700" [disabled]="(pageIndex() + 1) >= totalPages()" (click)="onPageChange(pageIndex() + 1)">Sonraki</button>
+      </div>
+    </div>
+  </ng-template>
+</section>
+
+

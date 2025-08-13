@@ -1,0 +1,32 @@
+.users-list {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td { border: 1px solid #e0e0e0; padding: 8px 12px; }
+    thead { background: #fafafa; }
+    tbody tr { cursor: pointer; }
+    tbody tr:hover { background: #f5f5f5; }
+  }
+
+  .pagination {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  .loading, .empty { text-align: center; padding: 24px; color: #666; }
+}
+
+
